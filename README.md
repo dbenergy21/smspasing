@@ -22,13 +22,36 @@
 
 ## 📦 설치 방법 (핸드폰에 APK 설치)
 
+### 0. GitHub Actions 워크플로우 활성화 (⭐ 최초 1회)
+
+GitHub App의 권한 제한으로 `.github/workflows/` 파일이 자동 추가되지 못했습니다.
+다음 중 **한 가지 방법**으로 워크플로우를 활성화하세요:
+
+**방법 A — GitHub 웹 UI에서 직접 추가 (가장 쉬움)**
+1. GitHub 저장소 페이지 상단 **"Add file" → "Create new file"**
+2. 파일 이름: `.github/workflows/build-apk.yml`
+3. `scripts/build-apk.yml.template` 파일의 내용을 복사 붙여넣기
+4. **"Commit new file"**
+
+**방법 B — 로컬에서 추가**
+```bash
+git clone https://github.com/dbenergy21/smspasing.git
+cd smspasing
+mkdir -p .github/workflows
+cp scripts/build-apk.yml.template .github/workflows/build-apk.yml
+git add .github/workflows/build-apk.yml
+git commit -m "ci: add APK build workflow"
+git push
+```
+
 ### 1. GitHub Actions에서 APK 다운로드
 
-1. 이 저장소의 **Actions** 탭 → 최신 **"Build APK"** 워크플로우 실행 결과 클릭
-2. 하단의 **Artifacts** 에서 `SmsToNotion-release` 다운로드 (또는 debug)
-3. 압축 풀면 `app-release.apk` 가 나옴
-4. APK를 폰으로 전송 (이메일/텔레그램/카톡나에게/USB 아무거나)
-5. 폰에서 APK 탭 → "출처를 알 수 없는 앱 설치" 허용 → 설치
+1. 워크플로우가 자동으로 실행됩니다 (또는 Actions 탭에서 수동 실행)
+2. 저장소 **Actions** 탭 → 최신 **"Build APK"** 워크플로우 실행 결과 클릭
+3. 하단의 **Artifacts** 에서 `SmsToNotion-release` 또는 `SmsToNotion-debug` 다운로드
+4. 압축 풀면 `app-release.apk` (또는 `app-debug.apk`) 가 나옴
+5. APK를 폰으로 전송 (이메일/텔레그램/카톡나에게/USB 아무거나)
+6. 폰에서 APK 탭 → "출처를 알 수 없는 앱 설치" 허용 → 설치
 
 ### 2. 권한 허용
 앱 실행 → 권한 요청이 뜨면 모두 **허용**:
