@@ -49,7 +49,7 @@ class NotionRepository(private val settings: SettingsRepository) {
      * DB 속성: 제목(Title), 날짜(Date), 발신/수신(Select), 번호(Phone), 내용(Text), 종류(Select)
      * 추가 자동 속성: 카테고리(Select, LLM이 있을 때), 주요정보(Text, LLM이 있을 때)
      */
-    suspend fun createPage(message: MessageEntity): String {
+    suspend fun createPage(message: MessageEntity): Result<String> = runCatching {
         val s = settings.current()
         require(s.notionToken.isNotBlank()) { "Notion 토큰이 설정되지 않았습니다." }
         require(s.notionDatabaseId.isNotBlank()) { "Notion DB ID가 설정되지 않았습니다." }
@@ -159,6 +159,21 @@ class NotionRepository(private val settings: SettingsRepository) {
             auth = "Bearer ${s.notionToken}",
             body = payload
         )
-        return resp.id ?: error("Notion 응답에 페이지 id 없음")
+        resp.id ?: error("Notion 응답에 페이지 id 없음")
+    }
+
+    /** 설정된 토큰/DB ID가 유효한지 GET 요청으로 확인 */
+    suspend fun verify(): Result<String> = runCatching {
+        val s = settings.current()
+        require(s.notionToken.isNotBlank()) { "토큰이 비어있습니다" }
+        require(s.notionDatabaseId.isNotBlank()) { "DB ID가 비어있습니다" }
+        val obj = api.getDatabase(
+            auth = "Bearer ${s.notionToken}",
+            id = s.notionDatabaseId
+        )
+        // title 필드 추출 시도
+        val title = obj["title"]?.jsonArray?.firstOrNull()
+            ?.jsonObject?.get("plain_text")?.jsonPrimitive?.content
+        title ?: "OK"
     }
 }

@@ -114,7 +114,7 @@ dependencies {
 
     // MediaPipe GenAI (Gemma 3n 온디바이스)
     // 출처: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android
-    implementation("com.google.mediapipe:tasks-genai:0.10.24")
+    implementation("com.google.mediapipe:tasks-genai:0.10.27")
 
     // Accompanist - 권한
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")

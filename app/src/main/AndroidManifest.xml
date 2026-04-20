@@ -64,6 +64,19 @@
             </intent-filter>
         </activity>
 
+        <!-- Vito 등 타 앱에서 "공유" 시트를 통해 텍스트를 받는 Activity -->
+        <activity
+            android:name=".ui.share.ShareReceiverActivity"
+            android:exported="true"
+            android:label="SMS → Notion으로 보내기"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+        </activity>
+
         <!-- 들어오는 SMS 수신기 -->
         <receiver
             android:name=".receiver.SmsReceiver"
