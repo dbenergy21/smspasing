@@ -50,6 +50,20 @@
             </intent-filter>
         </activity>
 
+        <!-- 다른 앱(Vito 등)에서 "공유"로 텍스트 받기 -->
+        <activity
+            android:name=".ui.share.ShareReceiverActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+        </activity>
+
         <!-- 들어오는 SMS 수신기 -->
         <receiver
             android:name=".receiver.SmsReceiver"
