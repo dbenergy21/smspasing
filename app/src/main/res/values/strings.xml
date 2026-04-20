@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SMS → Notion</string>
+    <string name="settings_title">설정</string>
+    <string name="notion_token_label">Notion Integration Token</string>
+    <string name="notion_database_id_label">Notion Database ID</string>
+    <string name="llm_mode_label">AI 처리 모드</string>
+    <string name="llm_mode_off">사용 안 함</string>
+    <string name="llm_mode_ondevice">온디바이스 (Gemma 3n E4B)</string>
+    <string name="llm_mode_cloud">클라우드 (Gemini API)</string>
+    <string name="gemma_model_path_label">Gemma 모델 경로 (.task)</string>
+    <string name="gemini_api_key_label">Gemini API Key (클라우드 모드)</string>
+    <string name="save_settings">저장</string>
+    <string name="sync_all">전체 문자 동기화 시작</string>
+    <string name="grant_permissions">SMS 권한 허용</string>
+    <string name="main_status_running">실시간 수신 감시 중</string>
+    <string name="main_status_stopped">권한/설정을 확인해주세요</string>
+</resources>
