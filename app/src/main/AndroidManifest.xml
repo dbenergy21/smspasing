@@ -39,6 +39,24 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
+        <!-- WorkManager 온디맨드 초기화 (App.Configuration.Provider 사용) -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <!-- WorkManager 포그라운드 서비스 타입 명시 (dataSync) -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -47,6 +65,20 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 다른 앱(Vito 등)에서 "공유"로 텍스트 받기 -->
+        <activity
+            android:name=".ui.share.ShareReceiverActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
 

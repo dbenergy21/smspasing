@@ -2,11 +2,11 @@ package com.sms2notion.app.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import com.sms2notion.app.App
 import timber.log.Timber
 
@@ -25,10 +25,21 @@ class RetryPendingWorker(
         Timber.i("재시도 대상: ${pending.size}건")
         val wm = WorkManager.getInstance(applicationContext)
         pending.forEach { m ->
-            val req = OneTimeWorkRequestBuilder<SendMessageWorker>()
-                .setInputData(workDataOf("uniqueKey" to m.uniqueKey))
+            val data = Data.Builder()
+                .putString("uniqueKey", m.uniqueKey)
+                .putString("address", m.address)
+                .putString("contactName", m.contactName)
+                .putString("body", m.body)
+                .putLong("date", m.date)
+                .putInt("type", m.type)
+                .putString("kind", m.kind)
+                .putLong("smsId", m.smsId)
                 .build()
-            wm.enqueueUniqueWork("send_${m.uniqueKey}", ExistingWorkPolicy.KEEP, req)
+            val req = OneTimeWorkRequestBuilder<ProcessMessageWorker>()
+                .setInputData(data)
+                .addTag("retry_pending")
+                .build()
+            wm.enqueueUniqueWork("process_${m.uniqueKey}", ExistingWorkPolicy.KEEP, req)
         }
         return Result.success()
     }
